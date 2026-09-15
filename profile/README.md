@@ -41,13 +41,15 @@ This GitHub organisation hosts QBF Consulting's public technical work, open know
 
 These repositories are independently governed technical artifacts rather than a single monolithic product. Their repository-local specifications, releases, governance files, tests, and evidence remain authoritative for their respective scopes.
 
-## Relationship to Sankarshan Mukhopadhyay's technical portfolio
+## Provenance and stewardship
 
-Some QBF Consulting projects originated in, or remain connected to, [Sankarshan Mukhopadhyay's broader technical portfolio](https://github.com/sankarshanmukhopadhyay). The portfolio records authorship, provenance, architectural relationships, experiments, and adjacent independently stewarded work; this organisation records the projects for which QBF Consulting currently provides institutional stewardship.
+QBF Consulting maintains projects that may originate in, compose with, or remain connected to independently developed technical work, standards activity, research, and open-source portfolios.
 
-Repository ownership therefore identifies **current stewardship**, not exclusive authorship of every underlying idea or transfer of authority from related projects. Conversely, inclusion of a QBF-maintained project in Sankarshan's portfolio does not change QBF's repository-local governance, release authority, or maintenance responsibility.
+Repository ownership identifies **current institutional stewardship**. It does not imply exclusive authorship of underlying ideas, nor does it transfer authority from related specifications, projects, standards bodies, or independently governed repositories.
 
-The [Trust Systems Modelling Stack (TSMS)](https://github.com/qbf-consulting/trust-systems-meta-model) is one example of this deliberate boundary: QBF maintains the Trust Systems Meta Model and Trust Infrastructure Schemas, while independently stewarded implementation and governance artifacts may compose with them without transferring authority between repositories.
+Where provenance or architectural relationships matter, individual repositories document those relationships explicitly. Normative authority, release authority, governance, and maintenance responsibility remain with the repository or institution that owns the relevant scope.
+
+QBF projects may therefore participate in broader technical stacks and interoperability arrangements without those relationships implying common ownership or governance.
 
 ## Website and contact
 
