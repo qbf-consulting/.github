@@ -31,9 +31,25 @@ This GitHub organisation hosts QBF Consulting's public technical work, open know
 
 ## Selected work
 
-Repositories in this organisation include work on governance and assurance models and open digital trust frameworks. The portfolio will expand as QBF Consulting develops and publishes additional reusable work.
+| Area | Project | Role |
+|---|---|---|
+| Digital trust frameworks | [Open National Digital Trust Framework](https://github.com/qbf-consulting/open-national-digital-trust-framework) | Reusable framework for national and multi-sector digital trust infrastructure |
+| Governance and assurance | [Governance, Authority and Assurance Metamodel](https://github.com/qbf-consulting/governance-authority-assurance-metamodel) | Machine-oriented model for authority, delegation, revocation, assurance, accountability, appeal, and remedy |
+| Trust-system semantics | [Trust Systems Meta Model](https://github.com/qbf-consulting/trust-systems-meta-model) | Canonical semantic model for describing and reasoning about trust systems |
+| Portable trust contracts | [Trust Infrastructure Schemas](https://github.com/qbf-consulting/trust-infrastructure-schemas) | Portable schemas and evidence contracts for trust-system interoperability |
+| Agent infrastructure | [Agent Registry Protocol](https://github.com/qbf-consulting/agent-registry-protocol) | Protocol, schemas, APIs, conformance material, and reference artifacts for deployable agent registries |
 
-## Contact
+These repositories are independently governed technical artifacts rather than a single monolithic product. Their repository-local specifications, releases, governance files, tests, and evidence remain authoritative for their respective scopes.
+
+## Relationship to Sankarshan Mukhopadhyay's technical portfolio
+
+Some QBF Consulting projects originated in, or remain connected to, [Sankarshan Mukhopadhyay's broader technical portfolio](https://github.com/sankarshanmukhopadhyay). The portfolio records authorship, provenance, architectural relationships, experiments, and adjacent independently stewarded work; this organisation records the projects for which QBF Consulting currently provides institutional stewardship.
+
+Repository ownership therefore identifies **current stewardship**, not exclusive authorship of every underlying idea or transfer of authority from related projects. Conversely, inclusion of a QBF-maintained project in Sankarshan's portfolio does not change QBF's repository-local governance, release authority, or maintenance responsibility.
+
+The [Trust Systems Modelling Stack (TSMS)](https://github.com/qbf-consulting/trust-systems-meta-model) is one example of this deliberate boundary: QBF maintains the Trust Systems Meta Model and Trust Infrastructure Schemas, while independently stewarded implementation and governance artifacts may compose with them without transferring authority between repositories.
+
+## Website and contact
 
 **QBF Consulting LLP**  
 Website: https://qbfconsulting.digital
