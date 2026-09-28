@@ -29,6 +29,8 @@ jobs:
     steps:
       - name: Check out policy repository
         uses: actions/checkout@v4
+      - name: Run licensing audit unit tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
       - name: Audit public QBF repository licensing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
