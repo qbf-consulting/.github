@@ -56,3 +56,10 @@ QBF projects may therefore participate in broader technical stacks and interoper
 
 **QBF Consulting LLP**  
 Website: https://qbfconsulting.digital
+
+
+## Licensing
+
+QBF uses an artifact-sensitive licensing policy rather than forcing one license across every repository. Executable artifacts default to Apache-2.0; broadly reusable specifications and documentation default to CC BY 4.0; reciprocal knowledge commons may use CC BY-SA 4.0 by explicit exception; and inherited upstream licensing is preserved where provenance requires it.
+
+See [QBF Consulting Portfolio Licensing Policy](../LICENSING-POLICY.md) for the organization-level defaults. Repository-local licensing remains authoritative for each project.
