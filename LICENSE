@@ -1,0 +1,15 @@
+QBF Consulting Organization Repository — Licensing Map
+
+Copyright (c) 2026 QBF Consulting LLP and contributors
+
+This repository contains materials distributed under two licenses. The applicable license is determined by artifact type unless a file explicitly states otherwise.
+
+1. Organization documentation and authored policy content — CC BY 4.0
+   Human-readable organization documentation, policy text, explanatory material, contribution guidance, and profile content are licensed under CC BY 4.0. See LICENSE-CONTENT.
+
+2. Software and executable artifacts — Apache License 2.0
+   Scripts, validators, tests, GitHub Actions workflows, machine-readable policy, executable configuration, and other machine-executable artifacts are licensed under Apache-2.0. See LICENSE-CODE.
+
+Third-party material remains subject to its respective license and attribution requirements.
+
+Organization defaults and exception rules are documented in LICENSING-POLICY.md. Repository-local licensing remains authoritative for each QBF repository.

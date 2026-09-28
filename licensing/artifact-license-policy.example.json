@@ -1,0 +1,32 @@
+{
+  "$schema": "./artifact-license-policy.schema.json",
+  "policy_version": "1.0",
+  "default_license": "CC-BY-4.0",
+  "rules": [
+    {
+      "artifact_classes": [
+        "software",
+        "scripts",
+        "validators",
+        "tests",
+        "schemas",
+        "workflows",
+        "executable-configuration"
+      ],
+      "license": "Apache-2.0",
+      "basis": "QBF default for executable and machine-actionable artifacts"
+    },
+    {
+      "artifact_classes": [
+        "specification",
+        "documentation",
+        "governance-prose",
+        "diagrams",
+        "release-notes"
+      ],
+      "license": "CC-BY-4.0",
+      "basis": "QBF default for broadly reusable authored technical content"
+    }
+  ],
+  "provenance_overrides": []
+}

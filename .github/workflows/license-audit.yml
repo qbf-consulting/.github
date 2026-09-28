@@ -1,0 +1,38 @@
+name: Portfolio licensing audit
+
+on:
+  pull_request:
+    paths:
+      - "LICENSING-POLICY.md"
+      - "LICENSE*"
+      - "licensing/**"
+      - "scripts/audit_licenses.py"
+      - ".github/workflows/license-audit.yml"
+  push:
+    branches: [main]
+    paths:
+      - "LICENSING-POLICY.md"
+      - "LICENSE*"
+      - "licensing/**"
+      - "scripts/audit_licenses.py"
+      - ".github/workflows/license-audit.yml"
+  schedule:
+    - cron: "17 4 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out policy repository
+        uses: actions/checkout@v4
+      - name: Run licensing audit unit tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Audit public QBF repository licensing
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          QBF_ORG: qbf-consulting
+        run: python3 scripts/audit_licenses.py

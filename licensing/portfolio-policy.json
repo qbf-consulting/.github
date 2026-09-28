@@ -1,0 +1,56 @@
+{
+  "policy_version": "1.0",
+  "effective_date": "2026-09-28",
+  "organization": "qbf-consulting",
+  "defaults": {
+    "executable": "Apache-2.0",
+    "specification_documentation": "CC-BY-4.0",
+    "reciprocal_knowledge_commons": "CC-BY-SA-4.0"
+  },
+  "discouraged_for_open_technical_infrastructure": [
+    "CC-BY-NC-SA-4.0"
+  ],
+  "recognized_license_families": [
+    "Apache-2.0",
+    "CC-BY-4.0",
+    "CC-BY-SA-4.0",
+    "MIT",
+    "MIXED"
+  ],
+  "declaration_paths": [
+    "LICENSE",
+    "LICENSE.md",
+    "LICENSE.txt",
+    "COPYING",
+    "COPYING.md"
+  ],
+  "mixed_map_markers": [
+    "LICENSE-CODE",
+    "LICENSE-CONTENT"
+  ],
+  "exceptions": {
+    "qbf-consulting/trust-infrastructure-schemas": {
+      "license": "MIT",
+      "basis": "inherited-upstream-provenance",
+      "source": "archetech/schemas"
+    },
+    "qbf-consulting/trust-systems-meta-model": {
+      "license": "CC-BY-SA-4.0",
+      "basis": "deliberate-reciprocal-semantic-commons"
+    },
+    "qbf-consulting/governance-authority-assurance-metamodel": {
+      "license": "CC-BY-4.0",
+      "basis": "specification-adoption"
+    },
+    "qbf-consulting/open-national-digital-trust-framework": {
+      "license": "CC-BY-4.0",
+      "basis": "framework-adoption"
+    }
+  },
+  "invariants": [
+    "Every public QBF repository MUST expose an explicit licensing declaration.",
+    "Missing licensing MUST NOT be inferred from repository purpose.",
+    "Inherited provenance MUST NOT be silently relicensed.",
+    "Mixed-content repositories SHOULD expose an explicit artifact licensing map."
+  ]
+}
