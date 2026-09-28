@@ -38,6 +38,7 @@ This GitHub organisation hosts QBF Consulting's public technical work, open know
 | Trust-system semantics | [Trust Systems Meta Model](https://github.com/qbf-consulting/trust-systems-meta-model) | Canonical semantic model for describing and reasoning about trust systems |
 | Portable trust contracts | [Trust Infrastructure Schemas](https://github.com/qbf-consulting/trust-infrastructure-schemas) | Portable schemas and evidence contracts for trust-system interoperability |
 | Agent infrastructure | [Agent Registry Protocol](https://github.com/qbf-consulting/agent-registry-protocol) | Protocol, schemas, APIs, conformance material, and reference artifacts for deployable agent registries |
+| Failure evidence | [Digital Trust Failure Corpus](https://github.com/qbf-consulting/digital-trust-failure-corpus) | Machine-readable failure conditions, adversarial configurations, and falsification criteria for digital trust systems |
 
 These repositories are independently governed technical artifacts rather than a single monolithic product. Their repository-local specifications, releases, governance files, tests, and evidence remain authoritative for their respective scopes.
 
