@@ -19,16 +19,17 @@ jobs:
     steps:
       - name: Classify and optionally delete fully merged branches
         uses: actions/github-script@v7
+        env:
+          HOUSEKEEPING_DRY_RUN: ${{ inputs.dry_run }}
+          HOUSEKEEPING_PRESERVE_PATTERNS: ${{ inputs.preserve_patterns }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          dry_run: ${{ inputs.dry_run }}
-          preserve_patterns: ${{ inputs.preserve_patterns }}
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const dryRun = core.getInput('dry_run') !== 'false';
+            const dryRun = process.env.HOUSEKEEPING_DRY_RUN !== 'false';
             const exclusions = ['gh-pages', 'pages', 'develop', 'development', 'staging', 'production', 'deploy/**', 'deployment/**', 'release/**', 'hotfix/**', 'research/**', 'draft/**', 'convergence/**', 'baseline/**', 'maintenance/**'];
-            const extra = core.getInput('preserve_patterns').split(',').map(s => s.trim()).filter(Boolean);
+            const extra = (process.env.HOUSEKEEPING_PRESERVE_PATTERNS || '').split(',').map(s => s.trim()).filter(Boolean);
             const patterns = [...exclusions, ...extra];
             function matches(name, pattern) {
               if (pattern.endsWith('/**')) return name.startsWith(pattern.slice(0, -3) + '/');
