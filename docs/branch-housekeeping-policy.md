@@ -9,7 +9,7 @@
 2. A closed and merged PR originates from this repository, targets the current default branch, and its recorded head SHA exactly equals the current branch HEAD; its merge commit is an ancestor of the current default HEAD. This supports squash/rebase histories without accepting arbitrary patch equivalence.
 
 ## Mandatory retention
-Default or protected branches, branches with open PRs, and deployment/long-running namespace exclusions. Defaults include `gh-pages`, `develop`, `release/**`, `research/**`, `draft/**`, `convergence/**`, and related operational prefixes. Callers may extend the exclusions.
+Default or protected branches, branches with open PRs, and deployment/long-running namespace exclusions. Defaults include `gh-pages`, `develop`, `release/**`, `release-*`, `hotfix-*`, `research/**`, `draft/**`, `convergence/**`, and related operational prefixes. Callers may extend the exclusions.
 
 Missing API evidence, exceptions, or changed SHA during revalidation => **RETAIN**. No age threshold is used. All candidate dispositions appear in the workflow job summary.
 
@@ -21,3 +21,6 @@ Call from a repository-local scheduled workflow; start with `dry_run: true`. Rev
 
 ## Manual recovery
 A deleted branch ref can be recreated from its audit-recorded SHA while the commit remains available. Deletion does not remove commits, tags, or releases immediately. Consult the run summary before attempting recovery.
+
+## Pattern grammar
+Preservation patterns are exact branch names, `namespace/**` for slash-delimited descendants, and `prefix*` for a textual prefix. No other glob grammar is supported. Historical release branch names (`release-3.8`) are preserved by the default `release-*` rule.
