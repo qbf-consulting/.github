@@ -1,0 +1,23 @@
+name: Validate branch housekeeping workflow
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/branch-housekeeping-reusable.yml'
+      - '.github/workflows/branch-housekeeping-validate.yml'
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate YAML and GitHub Script syntax
+        run: |
+          ruby -e 'require "yaml"; YAML.load_file(".github/workflows/branch-housekeeping-reusable.yml")'
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path(".github/workflows/branch-housekeeping-reusable.yml").read_text()
+          assert "timezone:" not in s
+          part=s.split("          script: |\n",1)[1]
+          lines=[line[12:] for line in part.splitlines() if line.strip()]
+          Path("/tmp/branch-housekeeping.mjs").write_text("\n".join(lines)+"\n")
+          PY
+          node --check /tmp/branch-housekeeping.mjs

@@ -1,0 +1,118 @@
+name: Reusable merged-branch housekeeping
+on:
+  workflow_call:
+    inputs:
+      dry_run:
+        description: "Report only when true; delete verified eligible branches when false"
+        type: boolean
+        default: true
+      preserve_patterns:
+        description: "Comma-separated exact branch names or namespace/** prefixes"
+        type: string
+        default: ""
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  housekeeping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Classify and optionally delete fully merged branches
+        uses: actions/github-script@v7
+        env:
+          HOUSEKEEPING_DRY_RUN: ${{ inputs.dry_run }}
+          HOUSEKEEPING_PRESERVE_PATTERNS: ${{ inputs.preserve_patterns }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const dryRun = process.env.HOUSEKEEPING_DRY_RUN !== 'false';
+            const exclusions = ['gh-pages', 'pages', 'develop', 'development', 'staging', 'production', 'deploy/**', 'deployment/**', 'release/**', 'hotfix/**', 'research/**', 'draft/**', 'convergence/**', 'baseline/**', 'maintenance/**'];
+            const extra = (process.env.HOUSEKEEPING_PRESERVE_PATTERNS || '').split(',').map(s => s.trim()).filter(Boolean);
+            const patterns = [...exclusions, ...extra];
+            function matches(name, pattern) {
+              if (pattern.endsWith('/**')) return name.startsWith(pattern.slice(0, -3) + '/');
+              return name === pattern;
+            }
+            async function pages(resource, params) {
+              return github.paginate(resource, {owner, repo, per_page: 100, ...params});
+            }
+            const baseRepo = (await github.rest.repos.get({owner, repo})).data;
+            const defaultName = baseRepo.default_branch;
+            const defaultBranch = (await github.rest.repos.getBranch({owner, repo, branch: defaultName})).data;
+            const defaultSHA = defaultBranch.commit.sha;
+            const branches = await pages(github.rest.repos.listBranches);
+            const results = [];
+            for (const snapshot of branches) {
+              const name = snapshot.name;
+              let reason = 'unclassified';
+              let evidence = '';
+              let decision = 'RETAIN';
+              try {
+                if (name === defaultName || snapshot.protected || patterns.some(p => matches(name, p))) {
+                  reason = 'default/protected/preserved';
+                } else {
+                  const live = (await github.rest.repos.getBranch({owner, repo, branch: name})).data;
+                  if (live.protected) {
+                    reason = 'protected';
+                  } else {
+                    const openPRs = await pages(github.rest.pulls.list, {state: 'open', head: owner + ':' + name});
+                    if (openPRs.some(p => p.head?.repo?.full_name === owner + '/' + repo)) {
+                      reason = 'open-pr';
+                    } else {
+                      const compared = (await github.rest.repos.compareCommits({
+                        owner, repo, base: defaultSHA, head: live.commit.sha
+                      })).data;
+                      if (compared.ahead_by === 0) {
+                        decision = 'ELIGIBLE';
+                        reason = 'branch-ancestry';
+                        evidence = 'default=' + defaultSHA + ';head=' + live.commit.sha;
+                      } else {
+                        const closed = await pages(github.rest.pulls.list, {state:'closed', head: owner + ':' + name});
+                        const merged = closed.filter(p => p.merged_at && p.head?.sha === live.commit.sha &&
+                          p.head?.repo?.full_name === owner + '/' + repo && p.base?.ref === defaultName);
+                        for (const pr of merged) {
+                          if (!pr.merge_commit_sha) continue;
+                          const integration = (await github.rest.repos.compareCommits({
+                            owner, repo, base: pr.merge_commit_sha, head: defaultSHA
+                          })).data;
+                          if (integration.behind_by === 0) {
+                            decision = 'ELIGIBLE';
+                            reason = 'merged-pr-exact-head';
+                            evidence = 'pr=' + pr.number + ';head=' + live.commit.sha + ';merge=' + pr.merge_commit_sha;
+                            break;
+                          }
+                        }
+                        if (decision !== 'ELIGIBLE') reason = 'unmerged-or-integration-unverified';
+                      }
+                      if (decision === 'ELIGIBLE') {
+                        const recent = (await github.rest.repos.getBranch({owner, repo, branch: name})).data;
+                        const currentDefault = (await github.rest.repos.getBranch({owner, repo, branch: defaultName})).data;
+                        const freshOpen = await pages(github.rest.pulls.list, {state:'open', head: owner + ':' + name});
+                        if (recent.protected || recent.commit.sha !== live.commit.sha ||
+                            currentDefault.commit.sha !== defaultSHA ||
+                            freshOpen.some(p => p.head?.repo?.full_name === owner + '/' + repo)) {
+                          decision = 'RETAIN';
+                          reason = 'revalidation-changed';
+                        } else if (!dryRun) {
+                          await github.rest.git.deleteRef({owner, repo, ref: 'heads/' + name});
+                          decision = 'DELETED';
+                        }
+                      }
+                    }
+                  }
+                }
+              } catch (e) {
+                decision = 'RETAIN';
+                reason = 'indeterminate:' + (e.status || 'error');
+                core.warning(name + ': ' + e.message);
+              }
+              results.push({name, decision, reason, evidence});
+            }
+            const rows = results.map(r => '| ' + [r.name.replaceAll('|', '\\|'), r.decision, r.reason, r.evidence].join(' | ') + ' |');
+            const report = ['## Branch housekeeping v1', '', 'Mode: ' + (dryRun ? 'DRY RUN' : 'DELETE'),
+              'Default: ' + defaultName + ' @ ' + defaultSHA, '',
+              '| Branch | Decision | Reason | Evidence |', '|---|---|---|---|', ...rows, ''].join('\n');
+            await core.summary.addRaw(report).write();
+            core.info(report);
