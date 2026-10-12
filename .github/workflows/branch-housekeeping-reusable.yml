@@ -28,11 +28,12 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const dryRun = process.env.HOUSEKEEPING_DRY_RUN !== 'false';
-            const exclusions = ['gh-pages', 'pages', 'develop', 'development', 'staging', 'production', 'deploy/**', 'deployment/**', 'release/**', 'hotfix/**', 'research/**', 'draft/**', 'convergence/**', 'baseline/**', 'maintenance/**'];
+            const exclusions = ['gh-pages', 'pages', 'develop', 'development', 'staging', 'production', 'deploy/**', 'deployment/**', 'release/**', 'release-*', 'hotfix/**', 'hotfix-*', 'research/**', 'draft/**', 'convergence/**', 'baseline/**', 'maintenance/**'];
             const extra = (process.env.HOUSEKEEPING_PRESERVE_PATTERNS || '').split(',').map(s => s.trim()).filter(Boolean);
             const patterns = [...exclusions, ...extra];
             function matches(name, pattern) {
               if (pattern.endsWith('/**')) return name.startsWith(pattern.slice(0, -3) + '/');
+              if (pattern.endsWith('*')) return name.startsWith(pattern.slice(0, -1));
               return name === pattern;
             }
             async function pages(resource, params) {
