@@ -1,0 +1,33 @@
+name: Validate DCO policy
+
+on:
+  pull_request:
+    paths:
+      - "scripts/dco-check.sh"
+      - ".github/workflows/dco-reusable.yml"
+      - ".github/workflows/dco-policy-test.yml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/dco-check.sh"
+      - ".github/workflows/dco-reusable.yml"
+      - ".github/workflows/dco-policy-test.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    name: DCO policy fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Positive fixture
+        run: |
+          bash scripts/dco-check.sh message $'feat(test): signed fixture\n\nSigned-off-by: Example Contributor <contributor@example.org>'
+      - name: Negative fixture
+        run: |
+          if bash scripts/dco-check.sh message 'feat(test): unsigned fixture'; then
+            echo "::error::Unsigned fixture was incorrectly accepted."
+            exit 1
+          fi
