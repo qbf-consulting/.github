@@ -1,0 +1,28 @@
+name: Reusable DCO check
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  dco:
+    name: DCO
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out QBF governance validator
+        uses: actions/checkout@v6
+        with:
+          repository: qbf-consulting/.github
+          ref: main
+          path: .qbf-governance
+          sparse-checkout: scripts/dco-check.sh
+          sparse-checkout-cone-mode: false
+
+      - name: Validate pull-request commits
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: bash .qbf-governance/scripts/dco-check.sh pr
