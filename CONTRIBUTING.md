@@ -33,3 +33,5 @@ Repository-specific `CONTRIBUTING.md` files may add requirements. They remain au
 ## Before merge
 
 A governed repository should require its applicable DCO and CI checks before merge. Do not weaken or bypass a failed check merely to obtain a green pull request.
+
+
